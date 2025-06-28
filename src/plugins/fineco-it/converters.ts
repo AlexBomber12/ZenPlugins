@@ -1,12 +1,12 @@
 // ===================== converters.ts =======================
-import { ZenmoneyAccount, ZenmoneyTransaction } from '../../types'
-import { RawOverview, RawMovement } from './fetchApi'
+import { RawOverview, RawMovement } from './models'
+import { ZenmoneyAccount, ZenmoneyTransaction } from './types'
 
 export function convertAccounts (overview: Record<string, RawOverview>): ZenmoneyAccount[] {
   const accOut: ZenmoneyAccount[] = []
   for (const acc of Object.values(overview)) {
     const balances = acc.balances ?? {}
-    for (const [cur, bal] of Object.entries(balances)) {
+    for (const [cur, bal] of Object.entries(balances) as Array<[string, { iban?: string, accountBalance?: number }]>) {
       const iban = bal.iban ?? `${acc.accountId}-${cur}`
       accOut.push({
         id: iban,
