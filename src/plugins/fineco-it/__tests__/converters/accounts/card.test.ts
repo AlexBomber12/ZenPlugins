@@ -1,75 +1,36 @@
 import { convertAccounts } from '../../../converters'
+import { RawOverview } from '../../../models'
 
 describe('convertAccounts', () => {
-  it.each([
-    [
-      [
-        {
-          id: 'B7C94FAC',
-          transactionNode: 's',
-          currency: {
-            shortName: 'RUB',
-            symbol: 'руб',
-            rate: 1
-          },
-          product: 'Mastercard Credit World Premium',
-          cba: '40817810301003402816',
-          pan: '5536********1038',
-          moneyAmount: {
-            value: 145600.24
-          },
-          accountBalance: {
-            value: 45600.24
-          }
-        },
-        {
-          id: 'FFA73280',
-          transactionNode: 'l',
-          currency: {
-            shortName: 'RUB',
-            symbol: 'руб',
-            rate: 1
-          },
-          product: 'Maestro',
-          cba: '40817810301003402816',
-          pan: '5536********7427',
-          moneyAmount: {
-            value: 145600.24
-          },
-          accountBalance: {
-            value: 45600.24
-          }
+  it('converts multiple balances', () => {
+    const overview: Record<string, RawOverview> = {
+      ACC1: {
+        accountId: 'ACC1',
+        accountName: 'Credit Card',
+        balances: {
+          EUR: { iban: 'ITACC1EUR', accountBalance: 45600.24 },
+          USD: { iban: 'ITACC1USD', accountBalance: 0 }
         }
-      ],
-      [
-        {
-          products: [
-            {
-              id: 'B7C94FAC',
-              transactionNode: 's'
-            },
-            {
-              id: 'FFA73280',
-              transactionNode: 'l'
-            }
-          ],
-          account: {
-            id: '40817810301003402816',
-            type: 'ccard',
-            title: 'Mastercard Credit World Premium',
-            instrument: 'RUB',
-            syncIds: [
-              '40817810301003402816',
-              '5536********1038',
-              '5536********7427'
-            ],
-            balance: 45600.24,
-            creditLimit: 100000
-          }
-        }
-      ]
-    ]
-  ])('converts card', (apiAccounts, accounts) => {
-    expect(convertAccounts(apiAccounts)).toEqual(accounts)
+      }
+    }
+
+    expect(convertAccounts(overview)).toEqual([
+      {
+        id: 'ITACC1EUR',
+        title: 'Credit Card EUR',
+        type: 'checking',
+        instrument: 'EUR',
+        balance: 45600.24,
+        syncID: ['ITACC1EUR']
+      },
+      {
+        id: 'ITACC1USD',
+        title: 'Credit Card USD',
+        type: 'checking',
+        instrument: 'USD',
+        balance: 0,
+        syncID: ['ITACC1USD']
+      }
+    ])
   })
 })

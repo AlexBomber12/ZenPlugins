@@ -3,7 +3,7 @@ import { CookieJar } from 'tough-cookie';
 import { wrapper } from 'axios-cookiejar-support';
 
 import { ZenMoney } from '../../sdk';       // <-- теперь локальный shim
-import { LoginFailedError } from '../errors';
+import { LoginFailedError } from '../../errors';
 import { makeHeaders } from './helpers';
 
 // ------------------------------------------------------------------

@@ -1,94 +1,30 @@
-import { convertTransaction } from '../../../converters'
-import { Account } from '../../../../../types/zenmoney'
+import { convertTransactions } from '../../../converters'
+import { RawMovement } from '../../../models'
 
-describe('convertTransaction', () => {
-  it.each([
-    [
-      {
-        type: 'HOLD',
-        operationTime: '2018-01-05 09:10:34 GMT+3',
-        relation: 'CARD',
-        relationId: 'B7C94FAC',
-        amount: {
-          value: -3,
-          currency: {
-            shortName: 'USD',
-            symbol: '$'
-          }
-        },
-        accountAmount: {
-          value: -164.1,
-          currency: {
-            shortName: 'RUB',
-            symbol: 'руб'
-          }
-        },
-        description: 'DE BERLIN MCDONALDS'
-      },
-      { id: 'B7C94FAC', instrument: 'RUB' },
-      {
-        hold: true,
-        date: new Date('2018-01-05T06:10:34.000Z'),
-        movements: [
-          {
-            id: null,
-            account: { id: 'B7C94FAC' },
-            invoice: { sum: -3, instrument: 'USD' },
-            sum: -164.1,
-            fee: 0
-          }
-        ],
-        merchant: {
-          fullTitle: 'DE BERLIN MCDONALDS',
-          mcc: null,
-          location: null
-        },
-        comment: null
-      }
-    ],
-    [
-      {
-        id: '7876123',
-        type: 'TRANSACTION',
-        operationTime: '2018-01-04 18:44:12 GMT+3',
-        debitingTime: '2018-01-07 12:21:07 GMT+3',
-        relation: 'ACCOUNT',
-        relationId: '4480910C',
-        amount: {
-          value: -50,
-          currency: {
-            shortName: 'USD',
-            symbol: '$'
-          }
-        },
-        accountAmount: {
-          value: -50,
-          currency: {
-            shortName: 'USD',
-            symbol: '$'
-          }
+describe('convertTransactions', () => {
+  it('converts movements', () => {
+    const movements: Record<string, RawMovement[]> = {
+      ITACC1EUR: [
+        {
+          movementId: '1',
+          operationDate: '2024-01-05',
+          description: 'Shop',
+          extendedDescription: '',
+          amount: -10
         }
-      },
-      { id: '4480910C', instrument: 'USD' },
+      ]
+    }
+
+    expect(convertTransactions(movements)).toEqual([
       {
-        hold: false,
-        date: new Date('2018-01-04T15:44:12.000Z'),
-        movements: [
-          {
-            id: '7876123',
-            account: { id: '4480910C' },
-            invoice: null,
-            sum: -50,
-            fee: 0
-          }
-        ],
-        merchant: null,
-        comment: null
+        id: '1',
+        account: 'ITACC1EUR',
+        date: '2024-01-05',
+        payee: 'Shop',
+        memo: '',
+        inflow: 0,
+        outflow: 10
       }
-    ]
-  ])('converts outcome', (apiTransaction, account, transaction) => {
-    expect(convertTransaction(apiTransaction, account as Account)).toEqual(
-      transaction
-    )
+    ])
   })
 })
