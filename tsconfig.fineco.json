@@ -5,14 +5,16 @@
     "target": "ES2020",
     "module": "commonjs",
     "esModuleInterop": true,
-    "strict": true
+    "strict": true,
+    "types": ["node", "jest"]
   },
   "include": [
     "src/plugins/fineco-it/**/*",
-    "src/sdk.d.ts"
+    "src/sdk.d.ts",
+    "src/sdk.ts",
+    "src/types/zenmoney.ts"
   ],
   "exclude": [
-    "src/types",
     "src/plugins/fineco-it/__tests__"  // ⏹  не компилируем Jest‑тесты
   ]
 }

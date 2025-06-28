@@ -1,26 +1,22 @@
 // ========================= index.ts =========================
-import { PluginHandler } from '../../types'
+import { CookieJar } from 'tough-cookie'
 import { authorize, loadAccountsAndTx } from './api'
 import { convertAccounts, convertTransactions } from './converters'
+import type { Preferences } from './models'
+import type { PluginHandler } from './types'
 
-export const scrape: PluginHandler = async (args) => {
-  const { preferences = {}, fromDate } = (args ?? {}) as {
-    preferences: { login?: string, password?: string, startDate?: string }
-    fromDate?: string | undefined
-  }
-
-  const login = preferences.login ?? ''
-  const password = preferences.password ?? ''
+export const scrape: PluginHandler = async ({ preferences, fromDate }: { preferences?: Preferences, fromDate?: Date }) => {
+  const { login = '', password = '' } = preferences ?? {}
   if (login === '' || password === '') {
     throw new Error('Missing login/password in preferences')
   }
 
-  const jar: Record<string, unknown> = {}
+  const jar = new CookieJar()
   await authorize(login, password, jar)
 
   const { overview, movements } = await loadAccountsAndTx(
     jar,
-    fromDate ?? preferences.startDate
+    fromDate ? fromDate.toISOString().slice(0, 10) : undefined
   )
 
   return {

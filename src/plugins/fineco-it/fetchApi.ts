@@ -1,9 +1,9 @@
+/* eslint-disable import/first */
 import axios, { AxiosInstance } from 'axios'
 import { CookieJar } from 'tough-cookie'
-import { wrapper } from 'axios-cookiejar-support'
 
 import { ZenMoney } from '../../sdk' // <-- теперь локальный shim
-import { LoginFailedError } from '../../errors'
+import { InvalidLoginOrPasswordError } from '../../errors'
 import { makeHeaders } from './helpers'
 
 // ------------------------------------------------------------------
@@ -18,7 +18,10 @@ export async function login (
   agent?: AxiosInstance
 ): Promise<CookieJar> {
   // ----------------------------------------------------------------
-  const client = wrapper(agent ?? axios.create({ baseURL: BASE_URL, jar }))
+  // eslint-disable-next-line import/no-unresolved
+  const { wrapper } = await import('axios-cookiejar-support')
+  const client = wrapper(agent ?? axios.create({ baseURL: BASE_URL }))
+  client.defaults.jar = jar
   // ----------------------------------------------------------------
 
   const resp = await client.post(
@@ -28,7 +31,7 @@ export async function login (
   )
 
   if (resp.data?.status !== 'OK') {
-    throw new LoginFailedError('Wrong login or password')
+    throw new InvalidLoginOrPasswordError()
   }
 
   ZenMoney.log('Fineco – auth OK')
