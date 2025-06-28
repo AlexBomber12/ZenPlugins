@@ -1,48 +1,27 @@
 import { convertAccounts } from '../../../converters'
+import { RawOverview } from '../../../models'
 
 describe('convertAccounts', () => {
-  it.each([
-    [
-      [
-        {
-          id: '4480910C',
-          transactionNode: 'p',
-          currency: {
-            shortName: 'USD',
-            symbol: '$',
-            rate: 54.6
-          },
-          product: 'Mastercard World Premium',
-          cba: '40817840401000898597',
-          moneyAmount: {
-            value: 2432.19
-          },
-          accountBalance: {
-            value: 2432.19
-          }
+  it('converts overview to accounts', () => {
+    const overview: Record<string, RawOverview> = {
+      ACC1: {
+        accountId: 'ACC1',
+        accountName: 'Fineco Account',
+        balances: {
+          EUR: { iban: 'ITACC1EUR', accountBalance: 150.5 }
         }
-      ],
-      [
-        {
-          products: [
-            {
-              id: '4480910C',
-              transactionNode: 'p'
-            }
-          ],
-          account: {
-            id: '40817840401000898597',
-            title: 'Mastercard World Premium',
-            type: 'ccard',
-            instrument: 'USD',
-            syncIds: ['40817840401000898597'],
-            balance: 2432.19,
-            creditLimit: 0
-          }
-        }
-      ]
-    ]
-  ])('converts current account', (apiAccounts, accounts) => {
-    expect(convertAccounts(apiAccounts)).toEqual(accounts)
+      }
+    }
+
+    expect(convertAccounts(overview)).toEqual([
+      {
+        id: 'ITACC1EUR',
+        title: 'Fineco Account EUR',
+        type: 'checking',
+        instrument: 'EUR',
+        balance: 150.5,
+        syncID: ['ITACC1EUR']
+      }
+    ])
   })
 })

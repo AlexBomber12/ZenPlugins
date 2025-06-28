@@ -27,3 +27,21 @@ export interface ConvertResult {
   products: Product[]
   account: AccountOrCard
 }
+
+export interface RawOverview {
+  accountId: string
+  accountName?: string
+  accountBalance?: { value: number }
+  balances?: Record<string, {
+    iban?: string
+    accountBalance?: number
+  }>
+}
+
+export interface RawMovement {
+  movementId: string
+  operationDate: string
+  description?: string
+  extendedDescription?: string
+  amount: number
+}
