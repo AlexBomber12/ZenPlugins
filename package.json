@@ -118,7 +118,8 @@
     "test": "eslint ./src && tsc --noEmit && node ./scripts/runJest.js",
     "lint": "eslint ./src",
     "check-commit": "node ./scripts/checkCommit.js",
-    "tsc": "node ./scripts/tsc-wrapper.js"
+    "tsc": "node ./scripts/tsc-wrapper.js",
+    "build:fineco-it": "node scripts/package.js"
   },
   "browserslist": {
     "development": [
