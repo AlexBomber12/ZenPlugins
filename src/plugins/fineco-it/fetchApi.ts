@@ -3,13 +3,16 @@ import axios, { AxiosInstance } from 'axios'
 import { CookieJar } from 'tough-cookie'
 
 import { ZenMoney } from '../../sdk' // <-- теперь локальный shim
-import { InvalidLoginOrPasswordError } from '../../errors'
+import { InvalidLoginOrPasswordError, AuthTimeoutError, BankApiUnavailable } from '../../errors'
+import { delay } from '../../common/utils'
 import { makeHeaders } from './helpers'
 
 // ------------------------------------------------------------------
 
 const BASE_URL = 'https://finecobank.germany-2.evergage.com'
 const LOGIN_PATH = '/v1/public/chql-prospect/vit/status'
+const MAX_AUTH_POLL = 3
+const AUTH_POLL_DELAY = 500
 
 interface LoginResponse {
   status?: string
@@ -34,7 +37,23 @@ export async function login (
     { headers: makeHeaders() }
   )
 
-  if (resp.data?.status !== 'OK') {
+  let status = resp.data?.status
+  let attempt = 0
+  while (status === 'PENDING') {
+    if (attempt >= MAX_AUTH_POLL) {
+      throw new AuthTimeoutError()
+    }
+    await delay(AUTH_POLL_DELAY * Math.pow(2, attempt))
+    const pollResp = await client.post<LoginResponse>(
+      LOGIN_PATH,
+      { user: login, pass: password },
+      { headers: makeHeaders() }
+    )
+    status = pollResp.data?.status
+    attempt++
+  }
+
+  if (status !== 'OK') {
     throw new InvalidLoginOrPasswordError()
   }
 
@@ -45,6 +64,8 @@ export async function login (
 // ------------------------------------------------------------------
 const OVERVIEW_PATH = '/api/overview'
 const MOVEMENTS_PATH = '/api/movements'
+const MAX_RETRIES = 3
+const RETRY_DELAY = 100
 
 import type { RawOverview, RawMovement } from './models'
 
@@ -53,11 +74,27 @@ async function apiGET<T> (
   url: string,
   params?: Record<string, string | number>
 ): Promise<T> {
-  const resp = await client.get<T>(url, {
-    headers: makeHeaders(),
-    params
-  })
-  return resp.data
+  let attempt = 0
+  let delayMs = RETRY_DELAY
+  while (true) {
+    try {
+      const resp = await client.get<T>(url, {
+        headers: makeHeaders(),
+        params
+      })
+      if (resp.status >= 500) {
+        throw new Error(`status ${resp.status}`)
+      }
+      return resp.data
+    } catch (e) {
+      attempt++
+      if (attempt >= MAX_RETRIES) {
+        throw new BankApiUnavailable()
+      }
+      await delay(delayMs)
+      delayMs *= 2
+    }
+  }
 }
 
 export async function fetchAccounts (

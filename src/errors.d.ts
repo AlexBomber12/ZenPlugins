@@ -52,3 +52,11 @@ export declare class UserInteractionError extends TemporaryError {
 export declare class PasswordExpiredError extends InvalidPreferencesError {
   constructor ()
 }
+
+export declare class AuthTimeoutError extends TemporaryError {
+  constructor ()
+}
+
+export declare class BankApiUnavailable extends TemporaryError {
+  constructor ()
+}

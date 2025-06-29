@@ -63,3 +63,7 @@ export class SubscriptionRequiredError extends TemporaryError {
     super('[SUR]')
   }
 }
+
+export class AuthTimeoutError extends TemporaryError {}
+
+export class BankApiUnavailable extends TemporaryError {}
