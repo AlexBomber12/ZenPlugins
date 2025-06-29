@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<provider>
-    <id>fineco-it</id>
-    <company>0</company>
-    <description>
-        FinecoBank Italy online banking.
-        Enter your Fineco credentials.
-    </description>
-    <version>1.0</version>
-    <build>1</build>
-    <modular>true</modular>
-    <files>
-        <js>index.js</js>
-        <preferences>preferences.xml</preferences>
-    </files>
-</provider>
+<plugin>
+  <!-- УНИКАЛЬНЫЙ идентификатор плагина -->
+  <name>fineco-it</name>
+
+  <!-- Версия плагина. При каждом релизе ↑ -->
+  <version>1.0.0</version>
+
+  <!-- Как увидит пользователь в списке банков -->
+  <title>Fineco Bank Italy</title>
+
+  <!-- Короткое описание (до 200 симв.) -->
+  <description>Импорт счетов и операций из Fineco Bank (PSD2 API).</description>
+
+  <!-- Минимальная версия SDK; 1 — совместима со stable Zenmoney -->
+  <minSdkVersion>1</minSdkVersion>
+
+  <!-- Указывает на СКОМПИЛИРОВАННЫЙ JS (после build) -->
+  <mainFile>index.js</mainFile>
+
+  <!-- XML с полями авторизации -->
+  <preferences>preferences.xml</preferences>
+</plugin>
