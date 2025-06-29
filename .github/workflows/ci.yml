@@ -1,0 +1,23 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [18.x, 20.x]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - run: yarn lint --max-warnings 0
+      - run: yarn tsc -b --noEmit
+      - run: yarn test --coverage
+      - run: yarn build fineco-it
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fineco-it
+          path: dist/fineco-it.zip
