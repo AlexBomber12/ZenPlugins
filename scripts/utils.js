@@ -5,23 +5,28 @@ const cheerio = require('cheerio')
 const { parse: parseCookieString, splitCookiesString } = require('set-cookie-parser')
 
 const convertManifestXmlToJs = (xml) => {
-  const $ = cheerio.load(xml, {
-    xmlMode: true
-  })
-  return $('provider').children().toArray()
+  const $ = cheerio.load(xml, { xmlMode: true })
+  let root = $('provider')
+  if (!root.length) root = $('plugin')
+  return root.children().toArray()
     .reduce((memo, node) => {
       const key = node.tagName
       if (key === 'files') {
-        const result = $(node).children().toArray()
-          .reduce((memo, fileNode) => {
-            if (fileNode.tagName === 'preferences') {
-              memo.preferences = $(fileNode).text()
-            } else {
-              memo.files.push($(fileNode).text())
-            }
-            return memo
-          }, { files: [], preferences: null })
+        const result = $(node).children().toArray().reduce((memo, fileNode) => {
+          if (fileNode.tagName === 'preferences') {
+            memo.preferences = $(fileNode).text()
+          } else {
+            memo.files.push($(fileNode).text())
+          }
+          return memo
+        }, { files: [], preferences: null })
         Object.assign(memo, result)
+      } else if (key === 'mainFile') {
+        memo.files = [$(node).text().replace(/\.js$/, '.ts')]
+      } else if (key === 'preferences') {
+        memo.preferences = $(node).text()
+      } else if (key === 'name' && root[0].tagName === 'plugin') {
+        memo.id = $(node).text()
       } else {
         memo[key] = $(node).text()
       }

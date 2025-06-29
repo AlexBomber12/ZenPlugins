@@ -2,6 +2,9 @@
   "name": "zenplugins",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=20"
+  },
   "dependencies": {
     "@babel/runtime": "7.17.2",
     "@types/argon2-browser": "^1.18.4",
@@ -14,7 +17,7 @@
     "@types/uuid": "8.3.2",
     "argon2-browser": "^1.18.0",
     "axios": "^1.10.0",
-    "axios-cookiejar-support": "5.0.2",
+    "axios-cookiejar-support": "^6.0.0",
     "base64-loader": "^1.0.0",
     "big-integer": "1.6.47",
     "body-parser": "1.18.0",
@@ -100,6 +103,7 @@
     "node-polyfill-webpack-plugin": "2.0.0",
     "react": "16.4.2",
     "react-dom": "16.4.2",
+    "script-loader": "^0.7.2",
     "terser-webpack-plugin": "5.3.3",
     "ts-jest": "28.0.6",
     "typescript": "4.7.4",
