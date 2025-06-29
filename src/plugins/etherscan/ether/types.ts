@@ -1,4 +1,4 @@
-import { Response } from '../common/types'
+import type { Response } from '../common/types'
 
 export interface AccountResponse extends Response {
   result: EthereumAccount[]

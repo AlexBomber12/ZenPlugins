@@ -2,7 +2,7 @@ import axios from 'axios'
 import { CookieJar } from 'tough-cookie'
 import { login, fetchAccounts, fetchTransactions } from '../../fetchApi'
 import { InvalidLoginOrPasswordError } from '../../../../errors'
-import { RawOverview, RawMovement } from '../../models'
+import type { RawOverview, RawMovement } from '../../models'
 
 jest.mock('axios-cookiejar-support', () => ({ wrapper: (a: unknown) => a }))
 

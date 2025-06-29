@@ -1,6 +1,6 @@
 // ===================== converters.ts =======================
-import { RawOverview, RawMovement } from './models'
-import { ZenmoneyAccount, ZenmoneyTransaction } from './types'
+import type { RawOverview, RawMovement } from './models'
+import type { ZenmoneyAccount, ZenmoneyTransaction } from './types'
 
 export function convertAccounts (overview: Record<string, RawOverview>): ZenmoneyAccount[] {
   const accOut: ZenmoneyAccount[] = []

@@ -1,4 +1,4 @@
-import { Account, Transaction } from '../../../types/zenmoney'
+import type { Account, Transaction } from '../../../types/zenmoney'
 import { Scrape } from '../types'
 import { fetchAccounts, fetchAccountTransactions } from './api'
 import { mergeTransferTransactions } from '../common/converters'

@@ -1,4 +1,5 @@
-import { Account, AccountType, Transaction } from '../../../types/zenmoney'
+import type { Account, Transaction } from '../../../types/zenmoney'
+import { AccountType } from '../../../types/zenmoney'
 
 import { EthereumAccount, EthereumTransaction } from './types'
 

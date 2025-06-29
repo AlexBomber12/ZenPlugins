@@ -1,4 +1,4 @@
-import { ScrapeFunc } from '../../types/zenmoney'
+import type { ScrapeFunc } from '../../types/zenmoney'
 
 export interface Preferences {
   apiKey: string

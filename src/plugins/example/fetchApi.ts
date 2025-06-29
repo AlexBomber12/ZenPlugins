@@ -1,7 +1,8 @@
-import { fetchJson, FetchOptions, FetchResponse } from '../../common/network'
+import { fetchJson } from '../../common/network'
+import type { FetchOptions, FetchResponse } from '../../common/network'
 import { getString } from '../../types/get'
 import { InvalidLoginOrPasswordError } from '../../errors'
-import { Preferences, Product, Session } from './models'
+import type { Preferences, Product, Session } from './models'
 import { isArray } from 'lodash'
 
 const baseUrl = 'https://raw.githubusercontent.com/zenmoney/ZenPlugins/master/src/plugins/example/public/'

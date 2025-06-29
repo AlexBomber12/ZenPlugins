@@ -1,5 +1,5 @@
 import { convertAccounts } from '../../../converters'
-import { RawOverview } from '../../../models'
+import type { RawOverview } from '../../../models'
 
 describe('convertAccounts', () => {
   it('converts multiple balances', () => {

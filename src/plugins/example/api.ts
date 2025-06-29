@@ -1,4 +1,4 @@
-import { Auth, Preferences, Product, Session } from './models'
+import type { Auth, Preferences, Product, Session } from './models'
 import { fetchAllAccounts, fetchAuthorization, fetchProductTransactions } from './fetchApi'
 
 export async function login (preferences: Preferences, auth?: Auth): Promise<Session> {

@@ -1,5 +1,5 @@
 import { parseBalance } from '../../api'
-import { Amount } from '../../../../types/zenmoney'
+import type { Amount } from '../../../../types/zenmoney'
 
 describe('parseBalance', () => {
   it.each([
