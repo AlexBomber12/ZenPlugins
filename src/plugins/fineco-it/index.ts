@@ -27,14 +27,14 @@ export const scrape: PluginHandler = async ({ preferences, fromDate }: { prefere
 
 export default scrape
 
-export async function run (): Promise<void> {
+export async function run (): Promise<boolean> {
   const fs = await import('fs')
   const axios = await import('axios')
 
   const credentialsPath = process.argv.find(arg => arg.endsWith('.json')) ?? ''
   if (credentialsPath === '') {
     console.error('Credentials file path is required')
-    return
+    return false
   }
   const raw = await fs.promises.readFile(credentialsPath, 'utf8')
   const preferences: Preferences = JSON.parse(raw)
@@ -83,4 +83,5 @@ export async function run (): Promise<void> {
   }
   console.log(`imported ${result.accounts.length} account(s) and ${result.transactions.length} transaction(s)`)
   console.log(JSON.stringify(result, null, 2))
+  return true
 }
