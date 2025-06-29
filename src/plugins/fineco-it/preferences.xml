@@ -1,33 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen>
-    <EditTextPreference
+<preferences>
+  <!-- Логин в интернет-банке -->
+  <EditTextPreference
         key="login"
-        obligatory="true"
-        title="Login"
-        dialogTitle="Login"
-        positiveButtonText="OK"
-        negativeButtonText="Cancel"
-        summary="|User id or login|{@s}"
-    />
-    <EditTextPreference
+        title="User ID"
+        summary="Номер клиента Fineco"
+        inputType="textEmailAddress"/>
+
+  <!-- Пароль / PIN -->
+  <EditTextPreference
         key="password"
-        obligatory="true"
-        inputType="textPassword"
         title="Password"
-        dialogTitle="Password"
-        positiveButtonText="OK"
-        negativeButtonText="Cancel"
-        summary="||***********"
-    />
-    <EditTextPreference
-        key="startDate"
-        obligatory="true"
-        inputType="date"
-        title="From what date to load transactions"
-        defaultValue="2018-01-01T00:00:00.000Z"
-        dialogTitle="From what date to load transactions"
-        positiveButtonText="OK"
-        negativeButtonText="Cancel"
-        summary="|startDate|{@s}"
-    />
-</PreferenceScreen>
+        summary="Ваш пароль Fineco"
+        inputType="textPassword" />
+
+  <!-- Начальная дата синхронизации -->
+  <EditTextPreference
+        key="fromDate"
+        title="Sync from (YYYY-MM-DD)"
+        summary="С какой даты загружать операции"
+        inputType="date" />
+
+  <!-- Переключатель песочницы, чтобы тестировать без живого счета -->
+  <CheckBoxPreference
+        key="sandbox"
+        title="Use Fineco PSD2 sandbox?"
+        defaultValue="false" />
+</preferences>
