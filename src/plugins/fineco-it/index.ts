@@ -81,5 +81,6 @@ export async function run (): Promise<void> {
     accounts: convertAccounts(overview),
     transactions: convertTransactions(movements)
   }
+  console.log(`imported ${result.accounts.length} account(s) and ${result.transactions.length} transaction(s)`)
   console.log(JSON.stringify(result, null, 2))
 }
