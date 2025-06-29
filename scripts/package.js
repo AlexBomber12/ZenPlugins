@@ -18,3 +18,9 @@ const manifest = path.join('src/plugins', plugin, 'ZenmoneyManifest.xml');
 const prefs = path.join('src/plugins', plugin, 'preferences.xml');
 const indexJs = path.join('build/plugins', plugin, 'index.js');
 run(`zip -j ${zipPath} ${manifest} ${prefs} ${indexJs}`);
+
+if (!fs.existsSync(path.join(root, zipPath))) {
+  console.error(`Failed to create ${zipPath}`);
+  process.exit(1);
+}
+console.log(`Created ${zipPath}`);
