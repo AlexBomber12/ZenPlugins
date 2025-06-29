@@ -31,7 +31,7 @@ export async function run (): Promise<boolean> {
   const fs = await import('fs')
   const axios = await import('axios')
 
-  const credentialsPath = process.argv.find(arg => arg.endsWith('.json')) ?? ''
+  const credentialsPath = process.argv.find((arg: string) => arg.endsWith('.json')) ?? ''
   if (credentialsPath === '') {
     console.error('Credentials file path is required')
     return false

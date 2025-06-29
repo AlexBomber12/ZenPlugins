@@ -1,7 +1,7 @@
-import { Account, ScrapeFunc, Transaction } from '../../types/zenmoney'
+import type { Account, ScrapeFunc, Transaction } from '../../types/zenmoney'
 import { fetchAccounts, fetchTransactions, login } from './api'
 import { convertAccounts, convertTransaction } from './converters'
-import { Auth, Preferences } from './models'
+import type { Auth, Preferences } from './models'
 
 export const scrape: ScrapeFunc<Preferences> = async ({ preferences, fromDate, toDate }) => {
   toDate = toDate ?? new Date()

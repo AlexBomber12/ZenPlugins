@@ -1,6 +1,6 @@
-import { Transaction } from '../../../types/zenmoney'
+import type { Transaction } from '../../../types/zenmoney'
 import { mergeTransferTransactions } from '../common/converters'
-import { Scrape } from '../types'
+import type { Scrape } from '../types'
 
 import { convertAccounts, convertTransactions } from './converters'
 import { fetchAccounts, fetchAccountTransactions } from './erc20'

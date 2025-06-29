@@ -1,8 +1,8 @@
 import flatten from 'lodash/flatten'
 import { fetch } from '../common'
-import { Preferences } from '../types'
+import type { Preferences } from '../types'
 
-import { AccountResponse, TokenAccount, TokenTransaction, TokenTransactionResponse } from './types'
+import type { AccountResponse, TokenAccount, TokenTransaction, TokenTransactionResponse } from './types'
 import { SUPPORTED_TOKENS } from './config'
 
 export async function fetchAddressTokens (preferences: Preferences, address: string): Promise<TokenAccount[]> {

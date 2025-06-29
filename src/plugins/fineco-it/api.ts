@@ -1,11 +1,12 @@
 /* eslint-disable import/first */
-import axios, { AxiosInstance } from 'axios'
-import { CookieJar } from 'tough-cookie'
+import axios from 'axios'
+import type { AxiosInstance } from 'axios'
+import type { CookieJar } from 'tough-cookie'
 
 import { ZenMoney } from '../../sdk'
 import { makeHeaders } from './helpers'
 import { login } from './fetchApi'
-import { RawOverview, RawMovement } from './models'
+import type { RawOverview, RawMovement } from './models'
 
 const BASE_URL = 'https://finecobank.germany-2.evergage.com'
 const OVERVIEW_PATH = '/api/overview'
@@ -46,8 +47,12 @@ export function getAccountBalance (
   overview: Record<string, RawOverview>,
   accId: string
 ): number | undefined {
-  if (typeof accId !== 'string' || accId === '' || overview[accId] == null) {
+  if (typeof accId !== 'string' || accId === '') {
     return undefined
   }
-  return overview[accId].accountBalance?.value
+  const account = overview[accId]
+  if (account == null) {
+    return undefined
+  }
+  return account.accountBalance?.value
 }

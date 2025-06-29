@@ -1,4 +1,7 @@
-/plugins/
+/src/plugins/*
+!src/plugins/fineco-it/**
 /src/polyfills/
 /src/UI/
 src/sdk.d.ts
+*.d.ts
+src/types/get.ts

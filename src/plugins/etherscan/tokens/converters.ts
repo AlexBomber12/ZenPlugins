@@ -1,4 +1,5 @@
-import { Account, AccountType, Transaction } from '../../../types/zenmoney'
+import type { Account, Transaction } from '../../../types/zenmoney'
+import { AccountType } from '../../../types/zenmoney'
 import { generateTokenAddress, SUPPORTED_TOKENS } from './config'
 import { TokenAccount, TokenTransaction } from './types'
 

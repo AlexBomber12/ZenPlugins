@@ -1,5 +1,5 @@
 import { convertTransactions } from '../../../converters'
-import { RawMovement } from '../../../models'
+import type { RawMovement } from '../../../models'
 
 describe('convertTransactions', () => {
   it('converts movements', () => {

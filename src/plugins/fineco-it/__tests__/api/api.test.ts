@@ -1,5 +1,5 @@
 import { getAccountBalance } from '../../api'
-import { RawOverview } from '../../models'
+import type { RawOverview } from '../../models'
 
 describe('getAccountBalance', () => {
   it('returns balance for valid id', () => {

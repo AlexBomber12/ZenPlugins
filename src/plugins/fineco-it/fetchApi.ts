@@ -1,6 +1,7 @@
 /* eslint-disable import/first */
-import axios, { AxiosInstance } from 'axios'
-import { CookieJar } from 'tough-cookie'
+import axios from 'axios'
+import type { AxiosInstance } from 'axios'
+import type { CookieJar } from 'tough-cookie'
 
 import { ZenMoney } from '../../sdk' // <-- теперь локальный shim
 import { InvalidLoginOrPasswordError, AuthTimeoutError, BankApiUnavailable } from '../../errors'
@@ -133,7 +134,8 @@ export async function fetchTransactions (
     })
     for (const [iban, list] of Object.entries(pageData.movements)) {
       if (all[iban] == null) all[iban] = []
-      all[iban].push(...list)
+      const accList = all[iban]!
+      accList.push(...list)
     }
     if (pageData.nextPage == null) break
     page = pageData.nextPage

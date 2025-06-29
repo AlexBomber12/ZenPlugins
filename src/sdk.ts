@@ -2,9 +2,11 @@
  * минимальный shim для локального webpack-preview.
  * В «боевом» приложении эти функции заменяются реальным объектом ZenMoney.
  */
+import { randomUUID } from 'crypto'
+
 export const ZenMoney = {
   // генератор UUID (заглушка – подходит для превью)
-  uuid: () => crypto.randomUUID(),
+  uuid: () => randomUUID(),
 
   // заглушка «повтори запрос» (для превью просто выполняем функцию)
   repeat: async <T>(fn: () => Promise<T>): Promise<T> => await fn(),

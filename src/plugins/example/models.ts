@@ -1,4 +1,4 @@
-import { AccountOrCard } from '../../types/zenmoney'
+import type { AccountOrCard } from '../../types/zenmoney'
 
 // Stored in persistent storage
 export interface Auth {
