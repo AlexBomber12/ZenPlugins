@@ -11,6 +11,10 @@ import { makeHeaders } from './helpers'
 const BASE_URL = 'https://finecobank.germany-2.evergage.com'
 const LOGIN_PATH = '/v1/public/chql-prospect/vit/status'
 
+interface LoginResponse {
+  status?: string
+}
+
 export async function login (
   jar: CookieJar,
   login: string,
@@ -24,7 +28,7 @@ export async function login (
   client.defaults.jar = jar
   // ----------------------------------------------------------------
 
-  const resp = await client.post(
+  const resp = await client.post<LoginResponse>(
     LOGIN_PATH,
     { user: login, pass: password },
     { headers: makeHeaders() }
