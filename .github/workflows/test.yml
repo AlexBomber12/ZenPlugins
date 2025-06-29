@@ -24,3 +24,7 @@ jobs:
 
     - name: Run tests
       run: yarn test
+    - name: Build plugin
+      run: yarn build:fineco-it
+    - name: Check bundle size
+      run: yarn size
