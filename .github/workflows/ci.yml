@@ -12,7 +12,8 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           cache: yarn
-      - run: yarn install --frozen-lockfile
+      - run: corepack enable
+      - run: yarn install --immutable --immutable-cache --check-cache
       - run: yarn lint --max-warnings 0
       - run: yarn tsc -b --noEmit
       - run: yarn test --coverage
