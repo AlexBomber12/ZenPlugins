@@ -13,7 +13,8 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>/scripts/setupJestTestFramework.js'],
   testMatch: [
     '<rootDir>/src/**/__tests__/**/*.(j|t)s?(x)',
-    '<rootDir>/src/**/?(*.)(spec|test).(j|t)s?(x)'
+    '<rootDir>/src/**/?(*.)(spec|test).(j|t)s?(x)',
+    '<rootDir>/__tests__/**/*.(j|t)s?(x)'
   ],
   testEnvironment: 'node',
   testEnvironmentOptions: {

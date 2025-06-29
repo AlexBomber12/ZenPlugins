@@ -115,7 +115,7 @@
     "start": "yarn && node ./scripts/wrapper.js \"webpack serve --config ./scripts/webpack.config.js --env PLUGIN=\"",
     "host": "yarn && node ./scripts/wrapper.js \"webpack serve --config ./scripts/webpack.config.js --mode=production --env PLUGIN=\"",
     "build": "yarn && node ./scripts/wrapper.js \"webpack build --config ./scripts/webpack.config.js --mode=production --env PLUGIN=\"",
-    "test": "eslint ./src && tsc --noEmit && node ./scripts/wrapper.js \"jest --coverage \"",
+    "test": "eslint ./src && tsc --noEmit && node ./scripts/runJest.js",
     "lint": "eslint ./src",
     "check-commit": "node ./scripts/checkCommit.js",
     "tsc": "node ./scripts/tsc-wrapper.js"
