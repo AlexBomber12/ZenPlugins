@@ -1,5 +1,5 @@
 import path from 'path'
-import { run } from '../../src/plugins/fineco-it'
+import { run } from '../..'
 
 jest.mock('axios-cookiejar-support', () => ({ wrapper: (a: unknown) => a }))
 

@@ -1,5 +1,6 @@
 module.exports = {
   preset: 'ts-jest',
+  roots: ['<rootDir>/src/plugins/fineco-it'],
   collectCoverageFrom: [
     'src/plugins/fineco-it/**/*.ts'
   ],

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { CookieJar } from 'tough-cookie'
-import { login, fetchAccounts } from '../../src/plugins/fineco-it/fetchApi'
-import { AuthTimeoutError, BankApiUnavailable } from '../../src/errors'
+import { login, fetchAccounts } from '../../fetchApi'
+import { AuthTimeoutError, BankApiUnavailable } from '../../../../errors'
 
 jest.mock('axios-cookiejar-support', () => ({ wrapper: (a: unknown) => a }))
 

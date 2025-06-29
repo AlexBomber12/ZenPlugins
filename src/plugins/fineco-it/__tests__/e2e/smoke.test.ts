@@ -1,6 +1,6 @@
 import path from 'path'
 import fs from 'fs'
-import { run } from '../../src/plugins/fineco-it'
+import { run } from '../..'
 
 jest.mock('axios-cookiejar-support', () => ({ wrapper: (a: unknown) => a }))
 
@@ -21,7 +21,7 @@ describe('fineco smoke', () => {
     await run()
     console.log = origLog
     process.argv = argv
-    const jsonLine = logs.find(l => l.trim().startsWith('{')) || '{}'
+    const jsonLine = logs.find(l => l.trim().startsWith('{')) ?? '{}'
     const data = JSON.parse(jsonLine)
     expect(Array.isArray(data.accounts) && data.accounts.length).toBeTruthy()
     expect(Array.isArray(data.transactions) && data.transactions.length).toBeTruthy()
