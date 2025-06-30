@@ -1,4 +1,11 @@
-import _ from 'lodash'
+import defaults from 'lodash-es/defaults'
+import isArray from 'lodash-es/isArray'
+import isBoolean from 'lodash-es/isBoolean'
+import isEqual from 'lodash-es/isEqual'
+import isNumber from 'lodash-es/isNumber'
+import isPlainObject from 'lodash-es/isPlainObject'
+import isString from 'lodash-es/isString'
+import sortBy from 'lodash-es/sortBy'
 import { isValidDate } from './dateUtils'
 
 export function formatCommentFeeLine (fee, instrument) {
@@ -28,11 +35,11 @@ function assertAccountCompanyIsValid (company) {
     return
   }
   const docs = 'account.company must be defined Object with shape {id: String} or {title: String}'
-  if (_.isPlainObject(company)) {
+  if (isPlainObject(company)) {
     const companyKeys = Object.keys(company)
     console.assert(
-      (_.isEqual(companyKeys, ['id']) && _.isString(company.id)) ||
-      (_.isEqual(companyKeys, ['title']) && _.isString(company.title)),
+      (isEqual(companyKeys, ['id']) && isString(company.id)) ||
+      (isEqual(companyKeys, ['title']) && isString(company.title)),
       docs
     )
   } else {
@@ -41,7 +48,7 @@ function assertAccountCompanyIsValid (company) {
 }
 
 function serializeZenmoneyAccountReference (account) {
-  console.assert(_.isPlainObject(account), 'account must be Object:', account)
+  console.assert(isPlainObject(account), 'account must be Object:', account)
   if (account.id) {
     const propsThatMakeNoDifference = Object.keys(account).filter((x) => x !== 'id')
     console.assert(
@@ -51,7 +58,7 @@ function serializeZenmoneyAccountReference (account) {
       account,
       'Either provide specific account {id} alone, or provide account weak-ref in shape {type, instrument[, syncIds, company]}'
     )
-    console.assert(_.isString(account.id), 'account.id must be String:', account)
+    console.assert(isString(account.id), 'account.id must be String:', account)
     console.assert(
       accountTypes.every((type) => account.id !== type && !account.id.startsWith(`${type}#`)),
       'account.id must not be used to provide weak reference. Use account weak-referencing type, instrument[, syncID] props instead.'
@@ -79,11 +86,11 @@ function serializeZenmoneyAccountReference (account) {
 
   const type = t === null ? 'ccard' : t
   console.assert(accountTypes.includes(type), `Unknown account.type "${type}". Supported values are`, accountTypes)
-  console.assert(_.isString(instrument), 'instrument must be String currency code', account)
+  console.assert(isString(instrument), 'instrument must be String currency code', account)
   if (type === 'cash') {
     console.assert(syncIds === null, 'cash account cannot have syncIds', account)
   } else {
-    console.assert(syncIds === null || (_.isArray(syncIds) && syncIds.length > 0), 'syncIds must be defined non-empty Array', account)
+    console.assert(syncIds === null || (isArray(syncIds) && syncIds.length > 0), 'syncIds must be defined non-empty Array', account)
   }
   return syncIds === null
     ? `${type}#${instrument}`
@@ -98,7 +105,7 @@ export function getSingleReadableTransactionMovement (readableTransaction) {
 }
 
 export function addMovement (readableTransaction, movement) {
-  return _.defaults({
+  return defaults({
     movements: [
       movement,
       getSingleReadableTransactionMovement(readableTransaction)
@@ -153,19 +160,19 @@ export function toZenMoneyTransaction (readableTransaction, accountsByIdLookup) 
 
   assertRestIsEmpty(rest, 'props', readableTransaction)
 
-  console.assert(_.isArray(movements), 'movements must be Array:', readableTransaction)
+  console.assert(isArray(movements), 'movements must be Array:', readableTransaction)
 
   console.assert(isValidDate(date), 'date must be defined Date:', readableTransaction)
   result.date = date
 
-  console.assert(hold === null || _.isBoolean(hold), 'hold must be defined Boolean:', readableTransaction)
+  console.assert(hold === null || isBoolean(hold), 'hold must be defined Boolean:', readableTransaction)
   if (hold !== null) {
     result.hold = hold
   }
-  console.assert(comment === null || _.isString(comment), 'comment must be defined String:', readableTransaction)
+  console.assert(comment === null || isString(comment), 'comment must be defined String:', readableTransaction)
   result.comment = comment
 
-  console.assert(merchant === null || _.isPlainObject(merchant), 'merchant must be defined Object:', readableTransaction)
+  console.assert(merchant === null || isPlainObject(merchant), 'merchant must be defined Object:', readableTransaction)
   if (merchant !== null) {
     const {
       city,
@@ -183,19 +190,19 @@ export function toZenMoneyTransaction (readableTransaction, accountsByIdLookup) 
       'merchant must be either { fullTitle, mcc, location } or { title, city, country, mcc, location }', readableTransaction)
 
     if (fullTitle === undefined) {
-      console.assert(title === null || _.isString(title), 'merchant.title must be defined String:', readableTransaction)
-      console.assert(city === null || _.isString(city), 'merchant.city must be defined String:', readableTransaction)
-      console.assert(country === null || _.isString(country), 'merchant.country must be defined String:', readableTransaction)
+      console.assert(title === null || isString(title), 'merchant.title must be defined String:', readableTransaction)
+      console.assert(city === null || isString(city), 'merchant.city must be defined String:', readableTransaction)
+      console.assert(country === null || isString(country), 'merchant.country must be defined String:', readableTransaction)
       result.payee = title
     } else {
-      console.assert(fullTitle === null || _.isString(fullTitle), 'merchant.fullTitle must be defined String:', readableTransaction)
+      console.assert(fullTitle === null || isString(fullTitle), 'merchant.fullTitle must be defined String:', readableTransaction)
       result.payee = fullTitle
     }
 
-    console.assert(mcc === null || (_.isNumber(mcc) && mcc > 0), 'merchant.mcc must be null or integer number > 0', readableTransaction)
+    console.assert(mcc === null || (isNumber(mcc) && mcc > 0), 'merchant.mcc must be null or integer number > 0', readableTransaction)
     result.mcc = mcc
 
-    console.assert(location === null || _.isPlainObject(location),
+    console.assert(location === null || isPlainObject(location),
       'merchant.location must be defined Object:',
       readableTransaction
     )
@@ -208,17 +215,17 @@ export function toZenMoneyTransaction (readableTransaction, accountsByIdLookup) 
       } = location
       assertRestIsEmpty(locationRest, 'merchant.location props', readableTransaction)
 
-      console.assert(_.isNumber(latitude), 'merchant.location.latitude must be Number:', readableTransaction)
+      console.assert(isNumber(latitude), 'merchant.location.latitude must be Number:', readableTransaction)
       result.latitude = latitude
 
-      console.assert(_.isNumber(longitude), 'merchant.location.longitude must be Number:', readableTransaction)
+      console.assert(isNumber(longitude), 'merchant.location.longitude must be Number:', readableTransaction)
       result.longitude = longitude
     }
   }
 
   if (movements.length === 1) {
     const movement = movements[0]
-    console.assert(_.isPlainObject(movement), 'movement must be Object:', readableTransaction)
+    console.assert(isPlainObject(movement), 'movement must be Object:', readableTransaction)
 
     const {
       id,
@@ -230,19 +237,19 @@ export function toZenMoneyTransaction (readableTransaction, accountsByIdLookup) 
     } = movement
     assertRestIsEmpty(movementRest, 'movement props', readableTransaction)
 
-    console.assert(id === null || _.isString(id), 'movement.id must be defined String:', readableTransaction)
+    console.assert(id === null || isString(id), 'movement.id must be defined String:', readableTransaction)
     result.id = id
 
     const serializedAccountRef = serializeZenmoneyAccountReference(accountRef)
 
-    console.assert(invoice === null || _.isPlainObject(invoice), 'invoice must be defined Object:', readableTransaction)
+    console.assert(invoice === null || isPlainObject(invoice), 'invoice must be defined Object:', readableTransaction)
 
     assertInvoiceIsNotRedundant(invoice, resolveAccountInstrument(accountRef, serializedAccountRef, accountsByIdLookup), readableTransaction)
 
     const accountSumIsUnknown = sum === null && invoice !== null
-    console.assert(accountSumIsUnknown || _.isNumber(sum), 'movement .sum can be either null while .invoice is present or be Number:', readableTransaction)
+    console.assert(accountSumIsUnknown || isNumber(sum), 'movement .sum can be either null while .invoice is present or be Number:', readableTransaction)
 
-    console.assert(_.isNumber(fee), 'movement.fee must be Number:', readableTransaction)
+    console.assert(isNumber(fee), 'movement.fee must be Number:', readableTransaction)
 
     const sign = sum > 0 || invoice?.sum > 0 ? 1 : -1
 
@@ -264,8 +271,8 @@ export function toZenMoneyTransaction (readableTransaction, accountsByIdLookup) 
         sum: invoiceSum,
         ...invoiceRest
       } = invoice
-      console.assert(_.isNumber(invoiceSum), 'invoice.sum must be Number:', readableTransaction)
-      console.assert(_.isString(invoiceInstrument), 'invoice.instrument must be String:', readableTransaction)
+      console.assert(isNumber(invoiceSum), 'invoice.sum must be Number:', readableTransaction)
+      console.assert(isString(invoiceInstrument), 'invoice.instrument must be String:', readableTransaction)
       assertRestIsEmpty(invoiceRest, 'invoice props', readableTransaction)
 
       console.assert(Math.sign(invoiceSum) === Math.sign(sign), 'invoice.sum and sumWithFee have contradictory signs:', readableTransaction)
@@ -286,7 +293,7 @@ export function toZenMoneyTransaction (readableTransaction, accountsByIdLookup) 
         movement,
         movementIndex
       }
-      console.assert(_.isPlainObject(movement), 'movement must be Object:', context)
+      console.assert(isPlainObject(movement), 'movement must be Object:', context)
 
       const {
         id,
@@ -298,16 +305,16 @@ export function toZenMoneyTransaction (readableTransaction, accountsByIdLookup) 
       } = movement
       assertRestIsEmpty(movementRest, 'movement props', context)
 
-      console.assert(id === null || _.isString(id), 'movement.id must be defined String:', readableTransaction)
+      console.assert(id === null || isString(id), 'movement.id must be defined String:', readableTransaction)
 
-      console.assert(invoice === null || _.isPlainObject(invoice), 'invoice must be defined Object:', readableTransaction)
+      console.assert(invoice === null || isPlainObject(invoice), 'invoice must be defined Object:', readableTransaction)
 
       const accountSumIsUnknown = sum === null && invoice !== null
-      console.assert(accountSumIsUnknown || _.isNumber(sum), 'movement .sum can be either null while .invoice is present or be Number:', readableTransaction)
+      console.assert(accountSumIsUnknown || isNumber(sum), 'movement .sum can be either null while .invoice is present or be Number:', readableTransaction)
 
-      console.assert(_.isNumber(fee), 'movement.fee must be Number:', readableTransaction)
+      console.assert(isNumber(fee), 'movement.fee must be Number:', readableTransaction)
     }
-    const [outcomeMovement, incomeMovement] = _.sortBy(movements, (x) => x.sum === null ? x.invoice.sum >= 0 : x.sum >= 0)
+    const [outcomeMovement, incomeMovement] = sortBy(movements, (x) => x.sum === null ? x.invoice.sum >= 0 : x.sum >= 0)
     const outcome = (() => {
       if (outcomeMovement.sum === null) {
         console.assert(outcomeMovement.invoice.sum < 0, 'outcome movement with null sum must have invoice.sum < 0', {

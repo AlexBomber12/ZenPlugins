@@ -6196,15 +6196,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-no-restricted-imports@npm:^0.0.0":
-  version: 0.0.0
-  resolution: "eslint-plugin-no-restricted-imports@npm:0.0.0"
-  dependencies:
-    requireindex: ~1.1.0
-  checksum: 125687bbe82305e0fc059a4143df7b8b3fe24327e113c10ce782e5e7990bf00f4a1491713db1b10e4b6733abc76a1e95cb57b4feba9f0f888ba949b83b637ea4
-  languageName: node
-  linkType: hard
-
 "eslint-plugin-prettier@npm:^4.0.0":
   version: 4.2.1
   resolution: "eslint-plugin-prettier@npm:4.2.1"
@@ -9193,6 +9184,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash-es@npm:4.17.21":
+  version: 4.17.21
+  resolution: "lodash-es@npm:4.17.21"
+  checksum: 05cbffad6e2adbb331a4e16fbd826e7faee403a1a04873b82b42c0f22090f280839f85b95393f487c1303c8a3d2a010048bf06151a6cbe03eee4d388fb0a12d2
+  languageName: node
+  linkType: hard
+
 "lodash.camelcase@npm:4.3.0":
   version: 4.3.0
   resolution: "lodash.camelcase@npm:4.3.0"
@@ -11189,13 +11187,6 @@ __metadata:
   version: 2.0.1
   resolution: "require-package-name@npm:2.0.1"
   checksum: 00f4e9e467ebe2bbced2b4198a165de11c83b5ee9f4c20b05a8782659b92bcb544dbd50be9a3eed746d05ecd875453e258c079eb3a79604b50a27cf8ab0798b5
-  languageName: node
-  linkType: hard
-
-"requireindex@npm:~1.1.0":
-  version: 1.1.0
-  resolution: "requireindex@npm:1.1.0"
-  checksum: 397057d97d7f753a3851abf0d6db94c295bd8254536f71f622b896ba08ea8c0d3e3771c8b009a557e6ce602f4245c0588836cdf59c4ce588fff721a7b855d323
   languageName: node
   linkType: hard
 
@@ -13586,7 +13577,6 @@ __metadata:
     eslint-plugin-import: 2.26.0
     eslint-plugin-jest: 26.5.3
     eslint-plugin-n: 15.2.4
-    eslint-plugin-no-restricted-imports: ^0.0.0
     eslint-plugin-promise: 6.0.0
     eslint-webpack-plugin: 3.2.0
     exports-loader: 4.0.0
@@ -13607,6 +13597,7 @@ __metadata:
     ksuid: 1.2.0
     lint-staged: ^16.1.2
     lodash: 4.17.21
+    lodash-es: 4.17.21
     moment: 2.24.0
     moment-timezone: 0.5.28
     nock: ^14.0.5

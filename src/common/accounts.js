@@ -1,4 +1,8 @@
-import _ from 'lodash'
+import groupBy from 'lodash-es/groupBy'
+import mapValues from 'lodash-es/mapValues'
+import flatMap from 'lodash-es/flatMap'
+import toPairs from 'lodash-es/toPairs'
+import fromPairs from 'lodash-es/fromPairs'
 import padLeft from 'pad-left'
 
 export function sanitizeSyncId (id) {
@@ -26,12 +30,12 @@ export function trimSyncId (id) {
 }
 
 const groupReplacementPairsByReplacement = (replacementPairs) => {
-  return _.toPairs(_.groupBy(replacementPairs, ([, replacement]) => replacement))
+  return toPairs(groupBy(replacementPairs, ([, replacement]) => replacement))
 }
 
 const ensureReplacementsAreUnique = (replacementPairsByInstrument) => {
-  return _.mapValues(replacementPairsByInstrument, (replacementPairs) => {
-    return _.flatMap(groupReplacementPairsByReplacement(replacementPairs), ([, pairs]) => {
+  return mapValues(replacementPairsByInstrument, (replacementPairs) => {
+    return flatMap(groupReplacementPairsByReplacement(replacementPairs), ([, pairs]) => {
       return pairs.length === 1
         ? pairs
         : []
@@ -42,27 +46,27 @@ const ensureReplacementsAreUnique = (replacementPairsByInstrument) => {
 export function ensureSyncIDsAreUniqueButSanitized ({ accounts, sanitizeSyncId }) {
   console.assert(Array.isArray(accounts), 'accounts must be array')
   console.assert(typeof sanitizeSyncId === 'function', 'sanitizeSyncId must be function')
-  const replacementPairsByInstrument = _.mapValues(_.groupBy(accounts, (x) => x.instrument), (accounts) => {
-    const flattenedAccounts = _.flatMap(accounts, ({ syncID, ...rest }) => {
+  const replacementPairsByInstrument = mapValues(groupBy(accounts, (x) => x.instrument), (accounts) => {
+    const flattenedAccounts = flatMap(accounts, ({ syncID, ...rest }) => {
       console.assert(Array.isArray(syncID) && syncID.length > 0, 'account.syncIds must be array of non-empty strings')
       return syncID.map((singleSyncID) => {
         console.assert(typeof singleSyncID === 'string' && singleSyncID.length > 0, 'account.syncIds must be array of non-empty strings, met not a valid string: ' + JSON.stringify(singleSyncID))
         return ({ singleSyncID, ...rest })
       })
     })
-    const flattenedAccountsByLast4Digits = _.groupBy(flattenedAccounts, (account) => {
+    const flattenedAccountsByLast4Digits = groupBy(flattenedAccounts, (account) => {
       return trimSyncId(account.singleSyncID)
     })
-    return _.flatMap(
-      _.toPairs(flattenedAccountsByLast4Digits),
+    return flatMap(
+      toPairs(flattenedAccountsByLast4Digits),
       ([last4, flattenedAccountsSharingKey]) => flattenedAccountsSharingKey.length === 1
         ? [[flattenedAccountsSharingKey[0].singleSyncID, last4]]
         : flattenedAccountsSharingKey.map((x) => [x.singleSyncID, sanitizeSyncId(x.singleSyncID)])
     )
   })
-  const replacementsByInstrument = _.mapValues(
+  const replacementsByInstrument = mapValues(
     ensureReplacementsAreUnique(replacementPairsByInstrument),
-    (replacementPairs) => _.fromPairs(replacementPairs)
+    (replacementPairs) => fromPairs(replacementPairs)
   )
   return accounts.map((account) => {
     const syncIds = account.syncID

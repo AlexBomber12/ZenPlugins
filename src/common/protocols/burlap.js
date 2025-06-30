@@ -1,5 +1,6 @@
 import cheerio from 'cheerio'
-import _ from 'lodash'
+import isArray from 'lodash-es/isArray'
+import isString from 'lodash-es/isString'
 import padLeft from 'pad-left'
 import { IncompatibleVersionError } from '../../errors'
 import { getByteLength } from '../stringUtils'
@@ -9,8 +10,8 @@ export const Type = {
   Long: function (value) { this.value = value },
   Double: function (value) { this.value = value },
   List: function (items, itemType) {
-    console.assert(_.isArray(items), 'Type.List items must be array')
-    console.assert(_.isString(itemType), 'Type.List itemType must be string')
+    console.assert(isArray(items), 'Type.List items must be array')
+    console.assert(isString(itemType), 'Type.List itemType must be string')
     this.items = items
     this.itemType = itemType
   }
@@ -93,7 +94,7 @@ export function stringifyToXml (object) {
     }
     str += '</list>'
     return str
-  } else if (_.isArray(object)) {
+  } else if (isArray(object)) {
     // List without explicitly given type, all elements are same type, list takes type from first element
     let str = '<list><type>'
     if (object.length > 0) {

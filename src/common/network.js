@@ -1,4 +1,8 @@
-import _ from 'lodash'
+import fromPairs from 'lodash-es/fromPairs'
+import isArrayBuffer from 'lodash-es/isArrayBuffer'
+import isTypedArray from 'lodash-es/isTypedArray'
+import omit from 'lodash-es/omit'
+import pick from 'lodash-es/pick'
 import { IncompatibleVersionError } from '../errors'
 import { sanitizeUrlContainingObject } from './sanitize'
 import { bufferToHex, isDebug } from './utils'
@@ -20,7 +24,7 @@ export function generateRequestLogId () {
 
 export async function fetch (url, options = {}) {
   const init = {
-    ..._.omit(options, ['sanitizeRequestLog', 'sanitizeResponseLog', 'log', 'stringify', 'parse']),
+    ...omit(options, ['sanitizeRequestLog', 'sanitizeResponseLog', 'log', 'stringify', 'parse']),
     ...options.body && { body: options.stringify ? options.stringify(options.body) : options.body }
   }
   const beforeFetchTicks = Date.now()
@@ -58,7 +62,7 @@ export async function fetch (url, options = {}) {
 
   const _headers = response.headers
   const headers = _headers.entries
-    ? _.fromPairs([..._headers.entries()])
+    ? fromPairs([..._headers.entries()])
     : _headers.map
   if (headers) {
     for (const key of [
@@ -87,7 +91,7 @@ export async function fetch (url, options = {}) {
   }
 
   response = {
-    ..._.pick(response, ['ok', 'status', 'statusText', 'url']),
+    ...pick(response, ['ok', 'status', 'statusText', 'url']),
     headers,
     body: options.binaryResponse ? await response.arrayBuffer() : await response.text()
   }
@@ -102,10 +106,10 @@ export async function fetch (url, options = {}) {
   }
   let bodyLog = response.body
   if (bodyLog) {
-    if (_.isTypedArray(bodyLog)) {
+    if (isTypedArray(bodyLog)) {
       bodyLog = bodyLog.buffer
     }
-    if (_.isArrayBuffer(bodyLog)) {
+    if (isArrayBuffer(bodyLog)) {
       bodyLog = bufferToHex(bodyLog)
     }
   }

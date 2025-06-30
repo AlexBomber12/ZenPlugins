@@ -1,6 +1,6 @@
-import _ from 'lodash'
+import isInteger from 'lodash-es/isInteger'
 // eslint-disable-next-line no-restricted-imports
-import moment from 'moment'
+import moment from 'moment-timezone'
 
 export function getIntervalBetweenDates (fromDate, toDate, intervals = ['year', 'month', 'day']) {
   const [d1, m1, y1] = toAdjustedDayMonthYearTuple(fromDate)
@@ -10,7 +10,7 @@ export function getIntervalBetweenDates (fromDate, toDate, intervals = ['year', 
     const count = interval === 'day'
       ? Math.floor((toDate.getTime() - fromDate.getTime()) / (24 * 3600 * 1000))
       : moment(toDate).diff(moment(fromDate), interval, i < intervals.length - 1)
-    if (_.isInteger(count)) {
+    if (isInteger(count)) {
       return { interval, count }
     }
     if (Math.round(count) < 1) {

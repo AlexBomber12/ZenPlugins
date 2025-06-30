@@ -1,6 +1,6 @@
 /* global prompt, Worker */
 
-import _ from 'lodash'
+import isEqual from 'lodash-es/isEqual'
 // eslint-disable-next-line no-unused-vars
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -116,7 +116,7 @@ async function init () {
     await new Promise((resolve) => setTimeout(resolve, 1))
 
     const preferences = fulfillPreferences(rawPreferences, preferencesSchema)
-    if (!_.isEqual(preferences, rawPreferences)) {
+    if (!isEqual(preferences, rawPreferences)) {
       await fetchJson('/zen/zp_preferences.json', { method: 'POST', body: preferences })
     }
     setState((state) => ({ ...state, workflowState: ':workflow-state/waiting' }))

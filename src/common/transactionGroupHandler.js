@@ -1,4 +1,10 @@
-import _ from 'lodash'
+import omit from 'lodash-es/omit'
+import keyBy from 'lodash-es/keyBy'
+import isFunction from 'lodash-es/isFunction'
+import isBoolean from 'lodash-es/isBoolean'
+import isPlainObject from 'lodash-es/isPlainObject'
+import sortBy from 'lodash-es/sortBy'
+import isEqual from 'lodash-es/isEqual'
 import { handleGroupBy, handleGroups } from './handleGroups'
 
 function isMainMovement (movement) {
@@ -18,7 +24,7 @@ export function adjustTransactions ({
     handleGroup: handleGroupBy(groupHandlers, options && mapOptions(options))
   })
   if (transactions.some(transaction => 'groupKeys' in transaction)) {
-    transactions = transactions.map(transaction => _.omit(transaction, ['groupKeys']))
+    transactions = transactions.map(transaction => omit(transaction, ['groupKeys']))
   }
   return transactions
 }
@@ -27,7 +33,7 @@ function mapOptions (options) {
   let accountsById = null
   if (options.accounts) {
     console.assert(Array.isArray(options.accounts), 'accounts must be array')
-    accountsById = _.keyBy(options.accounts, 'id')
+    accountsById = keyBy(options.accounts, 'id')
   }
   return {
     ...options,
@@ -40,7 +46,7 @@ function fillSumIfNeeded ({ movement, transaction }, secondMovement, shouldFillS
     return movement
   }
   const account = accountsById[movement.account.id]
-  if (!account || (_.isFunction(shouldFillSum) && !shouldFillSum({ movement, transaction, account }))) {
+  if (!account || (isFunction(shouldFillSum) && !shouldFillSum({ movement, transaction, account }))) {
     return movement
   }
   if (secondMovement.invoice && secondMovement.invoice.instrument === account.instrument) {
@@ -69,10 +75,10 @@ export function mergeTransfersHandler (transactions, {
   shouldFillOutcomeSum = false,
   ...rest
 } = {}) {
-  console.assert(_.isBoolean(shouldFillIncomeSum) || _.isFunction(shouldFillIncomeSum), 'shouldFillIncomeSum must be boolean or function')
-  console.assert(_.isBoolean(shouldFillOutcomeSum) || _.isFunction(shouldFillOutcomeSum), 'shouldFillOutcomeSum must be boolean or function')
+  console.assert(isBoolean(shouldFillIncomeSum) || isFunction(shouldFillIncomeSum), 'shouldFillIncomeSum must be boolean or function')
+  console.assert(isBoolean(shouldFillOutcomeSum) || isFunction(shouldFillOutcomeSum), 'shouldFillOutcomeSum must be boolean or function')
   if (shouldFillIncomeSum || shouldFillOutcomeSum) {
-    console.assert(_.isPlainObject(rest.accountsById), 'when shouldFillIncomeSum/shouldFillOutcomeSum option is set accounts array must be passed as well')
+    console.assert(isPlainObject(rest.accountsById), 'when shouldFillIncomeSum/shouldFillOutcomeSum option is set accounts array must be passed as well')
   }
   if (transactions.length < 2 ||
     transactions.length % 2 !== 0 ||
@@ -90,8 +96,8 @@ export function mergeTransfersHandler (transactions, {
   if (incomes[0].movements.find(isMainMovement).account.id === outcomes[0].movements.find(isMainMovement).account.id) {
     return null
   }
-  const sortedIncomes = _.sortBy(incomes, 'date')
-  const sortedOutcomes = _.sortBy(outcomes, 'date')
+  const sortedIncomes = sortBy(incomes, 'date')
+  const sortedOutcomes = sortBy(outcomes, 'date')
   return sortedOutcomes.map((transaction, i) => {
     const [outcome, income] = [transaction, sortedIncomes[i]].map(transaction => ({
       transaction,
@@ -112,9 +118,9 @@ export function mergeTransfersHandler (transactions, {
 }
 
 function areQuiteDifferentTransactions (transactions) {
-  const exampleMovement = _.omit(transactions[0].movements.find(isMainMovement), ['id'])
+  const exampleMovement = omit(transactions[0].movements.find(isMainMovement), ['id'])
   return transactions.some(transaction => {
     const movement = transaction.movements.find(isMainMovement)
-    return !_.isEqual(exampleMovement, _.omit(movement, ['id']))
+    return !isEqual(exampleMovement, omit(movement, ['id']))
   })
 }
