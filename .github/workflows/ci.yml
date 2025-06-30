@@ -18,6 +18,8 @@ jobs:
       - run: yarn tsc -b --noEmit
       - run: yarn test --coverage
       - run: yarn build fineco-it
+      - run: yarn build:fineco-it
+      - run: node scripts/package.js
       - run: yarn size
       - uses: actions/upload-artifact@v4
         with:
