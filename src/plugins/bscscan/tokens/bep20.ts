@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-restricted-imports
 import flatten from 'lodash/flatten'
 import { fetch } from '../common'
 import { Preferences } from '../types'

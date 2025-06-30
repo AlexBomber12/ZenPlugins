@@ -2,7 +2,9 @@ module.exports = {
   parser: '@babel/eslint-parser',
   parserOptions: { requireConfigFile: false, babelOptions: { configFile: './.babelrc' } },
   plugins: [
-    'github'
+    'github',
+    'import',
+    'no-restricted-imports'
   ],
   extends: [
     'standard',
@@ -69,6 +71,10 @@ module.exports = {
     eqeqeq: ['error', 'always'],
     'no-var': 'error',
     'github/array-foreach': 'error',
-    'array-callback-return': 'error'
+    'array-callback-return': 'error',
+    'no-restricted-imports': [
+      'error',
+      { patterns: ['moment', 'lodash/*', '**/faker'] }
+    ]
   }
 }

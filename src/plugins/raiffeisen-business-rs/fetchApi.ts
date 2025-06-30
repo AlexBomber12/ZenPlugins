@@ -13,6 +13,7 @@ import {
 } from './models'
 import { isArray } from 'lodash'
 import * as argon2 from 'argon2-browser'
+// eslint-disable-next-line no-restricted-imports
 import moment from 'moment'
 
 const baseUrl = 'https://rol.raiffeisenbank.rs/CorporateV4/Protected/Services/'

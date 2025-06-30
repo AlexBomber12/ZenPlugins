@@ -1,4 +1,5 @@
 import _ from 'lodash'
+// eslint-disable-next-line no-restricted-imports
 import moment from 'moment'
 import { stringify } from 'querystring'
 import { fetch, fetchJson } from '../../common/network'

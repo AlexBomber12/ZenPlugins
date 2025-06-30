@@ -3,6 +3,7 @@ import { OtpTransaction, Preferences, Session, OtpAccount } from './models'
 import { getCookies } from '../yettelbank-rs/helpers'
 import { checkResponseAndSetCookies, Currency, getCurrencyCodeNumeric } from './helpers'
 import { parseAccounts, parseTransactions } from './parsers'
+// eslint-disable-next-line no-restricted-imports
 import moment from 'moment'
 
 const baseUrl = 'https://ebank.otpbanka.rs/RetailV4/Protected/Services/'

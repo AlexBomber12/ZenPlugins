@@ -4,6 +4,7 @@ import { getCookies, checkResponseAndSetCookies, checkResponseSuccess } from './
 import { AccountInfo, Preferences, Session, TransactionInfo } from './models'
 import { mockedAccountsResponse, mockedTransactionsResponse } from './mocked_responses'
 import cheerio from 'cheerio'
+// eslint-disable-next-line no-restricted-imports
 import moment from 'moment'
 
 const baseUrl = 'https://online.mobibanka.rs/'

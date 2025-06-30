@@ -1,5 +1,6 @@
 import cheerio from 'cheerio'
 import { AccountInfo, AccountTransaction } from './types'
+// eslint-disable-next-line no-restricted-imports
 import moment from 'moment'
 
 const exchangeRateRegex = /\d+\.\d+ \w{3} Kurs:.+/

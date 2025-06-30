@@ -1,4 +1,5 @@
 import { getIntervalBetweenDates } from '../../common/momentDateUtils'
+// eslint-disable-next-line no-restricted-imports
 import moment from 'moment'
 
 /**

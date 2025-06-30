@@ -6140,6 +6140,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-plugin-no-restricted-imports@npm:^0.0.0":
+  version: 0.0.0
+  resolution: "eslint-plugin-no-restricted-imports@npm:0.0.0"
+  dependencies:
+    requireindex: ~1.1.0
+  checksum: 125687bbe82305e0fc059a4143df7b8b3fe24327e113c10ce782e5e7990bf00f4a1491713db1b10e4b6733abc76a1e95cb57b4feba9f0f888ba949b83b637ea4
+  languageName: node
+  linkType: hard
+
 "eslint-plugin-prettier@npm:^4.0.0":
   version: 4.2.1
   resolution: "eslint-plugin-prettier@npm:4.2.1"
@@ -11009,6 +11018,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"requireindex@npm:~1.1.0":
+  version: 1.1.0
+  resolution: "requireindex@npm:1.1.0"
+  checksum: 397057d97d7f753a3851abf0d6db94c295bd8254536f71f622b896ba08ea8c0d3e3771c8b009a557e6ce602f4245c0588836cdf59c4ce588fff721a7b855d323
+  languageName: node
+  linkType: hard
+
 "requires-port@npm:1.x.x, requires-port@npm:^1.0.0":
   version: 1.0.0
   resolution: "requires-port@npm:1.0.0"
@@ -13321,6 +13337,7 @@ __metadata:
     eslint-plugin-import: 2.26.0
     eslint-plugin-jest: 26.5.3
     eslint-plugin-n: 15.2.4
+    eslint-plugin-no-restricted-imports: ^0.0.0
     eslint-plugin-promise: 6.0.0
     eslint-webpack-plugin: 3.2.0
     exports-loader: 4.0.0

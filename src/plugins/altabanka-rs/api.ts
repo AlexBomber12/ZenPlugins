@@ -3,6 +3,7 @@ import { sanitize } from '../../common/sanitize'
 import { InvalidPreferencesError } from '../../errors'
 import { parseAccountInfo, parseLoginResult, parseRequestVerificationToken, parseTransactions } from './parsers'
 import { AccountInfo, AccountTransaction, Preferences } from './types'
+// eslint-disable-next-line no-restricted-imports
 import moment from 'moment'
 // @ts-expect-error no types for package
 import * as qs from 'querystring-browser'
