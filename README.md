@@ -4,8 +4,8 @@
 
 <p align="center">
   <a href="https://github.com/AlexBomber12/ZenPlugins/actions/workflows/ci.yml"><img src="https://github.com/AlexBomber12/ZenPlugins/actions/workflows/ci.yml/badge.svg" alt="CI"/></a>
-  <img src="https://img.shields.io/badge/Coverage-95%25-brightgreen" alt="Coverage 95%"/>
-  <img src="https://img.shields.io/badge/zip%20size-<350KB-success" alt="ZIP <350 KB"/>
+  <img src="https://img.shields.io/badge/Coverage-95%25-brightgreen" alt="Coverage 95 %"/>
+  <img src="https://img.shields.io/badge/zip%20size-<350KB-success" alt="Zip <350 KB"/>
   <img src="https://img.shields.io/badge/dependabot-enabled-blue" alt="Dependabot"/>
   <img src="https://img.shields.io/badge/License-MIT-green" alt="License MIT"/>
 </p>
@@ -38,3 +38,13 @@ Push tag **vX.Y.Z** → GitHub Release with `fineco-it.zip`.
 
 - Node ≥ 20
 - Fineco SCA quirks and other bank specific edge cases
+
+## Production limitations
+
+Both production and sandbox endpoints require TPP registration and eIDAS mutual TLS.
+Without these credentials the plugin works only in a mock-test mode.
+
+## Configuration flags
+
+- `sandbox` – use Fineco PSD2 sandbox (still requires TPP and mTLS)
+- `useAggregator` – run via Zenmoney aggregator instead of direct XS2A
