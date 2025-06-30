@@ -3,8 +3,7 @@ module.exports = {
   parserOptions: { requireConfigFile: false, babelOptions: { configFile: './.babelrc' } },
   plugins: [
     'github',
-    'import',
-    'no-restricted-imports'
+    'import'
   ],
   extends: [
     'standard',
@@ -74,7 +73,7 @@ module.exports = {
     'array-callback-return': 'error',
     'no-restricted-imports': [
       'error',
-      { patterns: ['moment', 'lodash/*', '**/faker'] }
+      { patterns: ['moment', 'lodash', 'faker', 'uuid'] }
     ]
   }
 }

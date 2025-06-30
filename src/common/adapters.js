@@ -1,5 +1,12 @@
 import i18n from 'i18next'
-import _ from 'lodash'
+import fromPairs from 'lodash-es/fromPairs'
+import mapValues from 'lodash-es/mapValues'
+import omit from 'lodash-es/omit'
+import toPairs from 'lodash-es/toPairs'
+import countBy from 'lodash-es/countBy'
+import mapKeys from 'lodash-es/mapKeys'
+import keyBy from 'lodash-es/keyBy'
+import isPlainObject from 'lodash-es/isPlainObject'
 import de from '../../locales/de.json'
 import en from '../../locales/en.json'
 import es from '../../locales/es.json'
@@ -29,7 +36,7 @@ import { sanitize } from './sanitize'
 import { isDebug } from './utils'
 
 i18n.init({
-  resources: _.fromPairs([
+  resources: fromPairs([
     ['de', de],
     ['en', en],
     ['es', es],
@@ -41,7 +48,7 @@ i18n.init({
   ].map(([lang, translation]) => [
     lang,
     {
-      translation: _.mapValues(translation, value => {
+      translation: mapValues(translation, value => {
         const paramRegExp = /%(\d)\$[sd]/g
         let result
         while ((result = paramRegExp.exec(value)) !== null) {
@@ -125,7 +132,7 @@ export function provideScrapeDates (fn) {
     const successAttemptDate = new Date().toISOString()
     const scrapeResult = fn({
       ...args,
-      preferences: _.omit(args.preferences, ['startDate']),
+      preferences: omit(args.preferences, ['startDate']),
       fromDate: calculateFromDate(args.preferences.startDate),
       toDate: null,
       isFirstRun: getIsFirstRun()
@@ -139,7 +146,7 @@ export function provideScrapeDates (fn) {
 }
 
 export function assertAccountIdsAreUnique (accounts) {
-  const notUniqueIdCountPairs = _.toPairs(_.countBy(accounts, (x) => x.id)).filter(([id, count]) => count > 1)
+  const notUniqueIdCountPairs = toPairs(countBy(accounts, (x) => x.id)).filter(([id, count]) => count > 1)
   if (notUniqueIdCountPairs.length > 0) {
     const [id, count] = notUniqueIdCountPairs[0]
     throw new Error(`There are ${count} accounts with the same id=${id}`)
@@ -245,7 +252,7 @@ export function patchAccounts (accounts) {
         instrument: account.instrument
       }, 'startBalance')
       return {
-        ..._.mapKeys(account, (_, key) => {
+        ...mapKeys(account, (_, key) => {
           return key === 'syncIds' ? 'syncID' : key
         }),
         instrument: balance.instrument,
@@ -260,7 +267,7 @@ export function patchAccounts (accounts) {
 
 export function patchTransactions (transactions, accounts) {
   console.assert(Array.isArray(transactions) && !transactions.some((x) => !x), 'transactions must be array of objects')
-  const accountsByIdLookup = _.keyBy(accounts, (x) => x.id)
+  const accountsByIdLookup = keyBy(accounts, (x) => x.id)
   if (ZenMoney.features.transactionDtoV2) {
     return transactions.map((x) => patchTransactionAmount(
       trimTransactionTransferAccountSyncIds(fixDateTimezonesForTransactionDtoV2(x)),
@@ -499,7 +506,7 @@ export function adaptScrapeToGlobalApi (scrape) {
   return function adaptedAsyncFn (args) {
     const isFirstRun = getIsFirstRun()
     const result = scrape({
-      ..._.isPlainObject(args) && args,
+      ...isPlainObject(args) && args,
       preferences: ZenMoney.getPreferences()
     })
     console.assert(result && typeof result.then === 'function', 'scrape() did not return a promise')

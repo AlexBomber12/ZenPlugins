@@ -1,43 +1,51 @@
-import _ from 'lodash'
+import isFunction from 'lodash-es/isFunction'
+import isObject from 'lodash-es/isObject'
+import isString from 'lodash-es/isString'
+import isNumber from 'lodash-es/isNumber'
+import isDate from 'lodash-es/isDate'
+import isBoolean from 'lodash-es/isBoolean'
+import isTypedArray from 'lodash-es/isTypedArray'
+import isArray from 'lodash-es/isArray'
+import mapValues from 'lodash-es/mapValues'
 import { parse, stringify } from 'querystring'
 
 export function sanitize (value, mask) {
   if (!mask) {
     return value
   }
-  if (_.isFunction(mask)) {
+  if (isFunction(mask)) {
     return mask(value)
   }
-  if (_.isObject(mask) && !_.isObject(value)) {
+  if (isObject(mask) && !isObject(value)) {
     return value
   }
-  if (_.isString(value)) {
+  if (isString(value)) {
     return `<string[${value.length}]>`
   }
-  if (_.isNumber(value)) {
+  if (isNumber(value)) {
     return '<number>'
   }
-  if (_.isDate(value)) {
+  if (isDate(value)) {
     return '<date>'
   }
-  if (_.isBoolean(value)) {
+  if (isBoolean(value)) {
     return '<bool>'
   }
-  if (_.isTypedArray(value)) {
+  if (isTypedArray(value)) {
     const arrayTypeName = Object.prototype.toString.call(value).match(/^\[object (.*)]$/i)[1]
     return `<${arrayTypeName}[${value.length}]>`
   }
-  if (_.isArray(value)) {
+  if (isArray(value)) {
     return value.map((item) => sanitize(item, mask))
   }
-  if (_.isObject(value)) {
-    return _.mapValues(value, (val, key) => sanitize(val, mask === true ? true : mask[key]))
+  if (isObject(value)) {
+    return mapValues(value, (val, key) => sanitize(val, mask === true ? true : mask[key]))
   }
   return '<value>'
 }
 
 export function sanitizeUrl (url, mask) {
-  if (!_.isString(url) || !_.isObject(mask) || _.isFunction(mask)) {
+  if (!isString(url) || !isObject(mask) || isFunction(mask)) {
     return sanitize(url, mask)
   }
   const queryIndex = url.indexOf('?')
@@ -50,7 +58,7 @@ export function sanitizeUrl (url, mask) {
 }
 
 export function sanitizeUrlContainingObject (object, mask) {
-  if (!_.isObject(object) || !_.isObject(mask) || !('url' in object) || !('url' in mask)) {
+  if (!isObject(object) || !isObject(mask) || !('url' in object) || !('url' in mask)) {
     return sanitize(object, mask)
   }
   return sanitize(object, {

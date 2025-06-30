@@ -1,5 +1,5 @@
 import deepDiff from 'deep-diff'
-import _ from 'lodash'
+import flatMap from 'lodash-es/flatMap'
 
 const prettifyDiffEntry = (diffEntry) => {
   if (diffEntry.kind === 'A') {
@@ -15,4 +15,4 @@ const prettifyDiffEntry = (diffEntry) => {
   return lines
 }
 
-export const prettyDeepDiff = (x, y) => _.flatMap(deepDiff(x, y), (diffEntry) => prettifyDiffEntry(diffEntry))
+export const prettyDeepDiff = (x, y) => flatMap(deepDiff(x, y), (diffEntry) => prettifyDiffEntry(diffEntry))

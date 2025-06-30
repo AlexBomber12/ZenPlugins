@@ -1,4 +1,5 @@
-import _ from 'lodash'
+import noop from 'lodash-es/noop'
+import pick from 'lodash-es/pick'
 import {
   adaptScrapeToGlobalApi,
   convertTimestampToDate,
@@ -80,7 +81,7 @@ describe('adaptScrapeToGlobalApi', () => {
       getPreferences: jest.fn()
     }
     expect(() => adaptScrapeToGlobalApi(null)).toThrow('argument must be function')
-    expect(() => adaptScrapeToGlobalApi(_.noop)()).toThrow('scrape() did not return a promise')
+    expect(() => adaptScrapeToGlobalApi(noop)()).toThrow('scrape() did not return a promise')
   })
 
   it('should check promise returns anything', () => {
@@ -114,7 +115,7 @@ describe('adaptScrapeToGlobalApi', () => {
 
   it('should pass ZPAPIError as it is', async () => {
     const expectedError = new TemporaryError('temporary error message')
-    const expectedErrorData = _.pick(expectedError, ['message', 'allowRetry', 'fatal'])
+    const expectedErrorData = pick(expectedError, ['message', 'allowRetry', 'fatal'])
     const promise = expect(new Promise((resolve, reject) => {
       global.ZenMoney = {
         getPreferences: jest.fn(),

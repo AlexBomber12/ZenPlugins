@@ -1,6 +1,6 @@
 /* global XMLHttpRequest */
 
-import _ from 'lodash'
+import isTypedArray from 'lodash-es/isTypedArray'
 import { parseHeaderParameters } from './common/network'
 import { generateUUID } from './common/utils'
 import { getTargetUrl, MANUAL_REDIRECT_HEADER, PROXY_TARGET_HEADER, TRANSFERABLE_HEADER_PREFIX } from './shared'
@@ -98,7 +98,7 @@ export const handleException = (message) => {
 }
 
 const processBody = (body, type) => {
-  if (!body || typeof body === 'string' || _.isTypedArray(body)) {
+  if (!body || typeof body === 'string' || isTypedArray(body)) {
     return body
   }
   if (body instanceof ZenMoney.Blob) {
