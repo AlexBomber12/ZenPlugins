@@ -25,3 +25,10 @@ you can help us — create a plugin by yourself.
 So after a successful merge, all users will be able to use it.
 
 To get started, look at our [documentation](./docs/README.md).
+
+## Contributing
+Configure Git to use the Husky hooks:
+
+```bash
+git config core.hooksPath .husky
+```
