@@ -11,11 +11,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
-          cache: yarn
+          cache: 'npm'
       - name: Activate Yarn 3
         run: |
           corepack enable
           corepack prepare yarn@3.6.4 --activate
+          yarn --version
       - run: yarn install --immutable
       - run: yarn run mdlint
       - run: yarn lint --max-warnings 0

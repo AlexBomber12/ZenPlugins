@@ -2975,6 +2975,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:^20":
+  version: 20.19.2
+  resolution: "@types/node@npm:20.19.2"
+  dependencies:
+    undici-types: ~6.21.0
+  checksum: bbff606094c24c96cb3ed9a72d0d18473cf59864db70a4fc85189a9c41072fe9eeeff29601ce086c62255f335e0b6a7c8d8095c75dfe0da0c2daef37486543b5
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:^22.0.0":
   version: 22.15.34
   resolution: "@types/node@npm:22.15.34"
@@ -15011,6 +15020,7 @@ __metadata:
     "@types/jsrsasign": 10.5.1
     "@types/lodash": 4.14.178
     "@types/nock": ^11.1.0
+    "@types/node": ^20
     "@types/node-forge": 0.9.1
     "@types/pad-left": 2.1.0
     "@types/set-cookie-parser": ^2.4.7
