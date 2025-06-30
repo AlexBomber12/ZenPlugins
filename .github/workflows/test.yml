@@ -20,7 +20,7 @@ jobs:
     - name: Activate Yarn 3
       run: |
         corepack enable
-        corepack use
+        corepack prepare yarn@3.6.4 --activate
     - name: Install deps
       run: yarn install --immutable --immutable-cache --check-cache
 

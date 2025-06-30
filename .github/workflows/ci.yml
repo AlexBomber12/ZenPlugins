@@ -15,7 +15,7 @@ jobs:
       - name: Activate Yarn 3
         run: |
           corepack enable
-          corepack use
+          corepack prepare yarn@3.6.4 --activate
       - run: yarn install --immutable --immutable-cache --check-cache
       - run: yarn lint --max-warnings 0
       - run: yarn tsc -b --noEmit
