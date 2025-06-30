@@ -60,3 +60,7 @@ export declare class AuthTimeoutError extends TemporaryError {
 export declare class BankApiUnavailable extends TemporaryError {
   constructor ()
 }
+
+export declare class UnexpectedResponseError extends TemporaryError {
+  constructor ()
+}

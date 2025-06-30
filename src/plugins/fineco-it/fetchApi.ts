@@ -4,7 +4,7 @@ import type { AxiosInstance } from 'axios'
 import type { CookieJar } from 'tough-cookie'
 
 import { ZenMoney } from '../../sdk' // <-- теперь локальный shim
-import { InvalidLoginOrPasswordError, AuthTimeoutError, BankApiUnavailable } from '../../errors'
+import { InvalidLoginOrPasswordError, AuthTimeoutError, BankApiUnavailable, UnexpectedResponseError } from '../../errors'
 import { delay } from '../../common/utils'
 import { makeHeaders } from './helpers'
 
@@ -28,7 +28,7 @@ export async function login (
   // ----------------------------------------------------------------
   // eslint-disable-next-line import/no-unresolved
   const { wrapper } = await import('axios-cookiejar-support')
-  const client = wrapper(agent ?? axios.create({ baseURL: BASE_URL }))
+  const client = wrapper(agent ?? axios.create({ baseURL: BASE_URL, proxy: false }))
   client.defaults.jar = jar
   // ----------------------------------------------------------------
 
@@ -88,6 +88,9 @@ async function apiGET<T> (
       }
       return resp.data
     } catch (e) {
+      if (e instanceof SyntaxError) {
+        throw new UnexpectedResponseError()
+      }
       attempt++
       if (attempt >= MAX_RETRIES) {
         throw new BankApiUnavailable()
@@ -104,7 +107,7 @@ export async function fetchAccounts (
 ): Promise<Record<string, RawOverview>> {
   // eslint-disable-next-line import/no-unresolved
   const { wrapper } = await import('axios-cookiejar-support')
-  const client = wrapper(agent ?? axios.create({ baseURL: BASE_URL }))
+  const client = wrapper(agent ?? axios.create({ baseURL: BASE_URL, proxy: false }))
   client.defaults.jar = jar
   return await apiGET<Record<string, RawOverview>>(client, OVERVIEW_PATH)
 }
@@ -121,7 +124,7 @@ export async function fetchTransactions (
 ): Promise<Record<string, RawMovement[]>> {
   // eslint-disable-next-line import/no-unresolved
   const { wrapper } = await import('axios-cookiejar-support')
-  const client = wrapper(agent ?? axios.create({ baseURL: BASE_URL }))
+  const client = wrapper(agent ?? axios.create({ baseURL: BASE_URL, proxy: false }))
   client.defaults.jar = jar
 
   const all: Record<string, RawMovement[]> = {}

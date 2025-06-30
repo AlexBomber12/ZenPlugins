@@ -67,3 +67,5 @@ export class SubscriptionRequiredError extends TemporaryError {
 export class AuthTimeoutError extends TemporaryError {}
 
 export class BankApiUnavailable extends TemporaryError {}
+
+export class UnexpectedResponseError extends TemporaryError {}
