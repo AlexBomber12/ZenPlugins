@@ -1,4 +1,5 @@
 import cheerio from 'cheerio'
+// eslint-disable-next-line no-restricted-imports
 import moment from 'moment'
 import { parseCSV } from './helpers'
 

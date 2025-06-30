@@ -5,6 +5,7 @@ import { parse, splitCookiesString } from 'set-cookie-parser'
 import { AccountBalanceResponse, Auth, GetAccountTransactionsResponse, GetTransactionDetailsResponse, LoginResponse, Preferences } from './models'
 import { isArray, chunk } from 'lodash'
 import * as argon2 from 'argon2-browser'
+// eslint-disable-next-line no-restricted-imports
 import moment from 'moment'
 
 const baseUrl = 'https://rol.raiffeisenbank.rs/Retail/Protected/Services/'

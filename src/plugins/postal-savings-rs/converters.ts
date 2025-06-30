@@ -1,5 +1,6 @@
 import { AccountType, Transaction, Account } from '../../types/zenmoney'
 import { AccountDetails } from './models'
+// eslint-disable-next-line no-restricted-imports
 import moment from 'moment'
 
 function accountDetailsToId (account: AccountDetails): string {

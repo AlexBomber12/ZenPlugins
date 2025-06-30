@@ -1,4 +1,5 @@
 import _ from 'lodash'
+// eslint-disable-next-line no-restricted-imports
 import moment from 'moment'
 
 export function getIntervalBetweenDates (fromDate, toDate, intervals = ['year', 'month', 'day']) {

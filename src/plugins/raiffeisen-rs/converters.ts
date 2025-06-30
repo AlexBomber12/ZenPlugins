@@ -1,5 +1,6 @@
 import { AccountType, Amount, Transaction } from '../../types/zenmoney'
 import { AccountBalanceResponse, GetAccountTransactionsResponse, RaiffAccount } from './models'
+// eslint-disable-next-line no-restricted-imports
 import moment from 'moment'
 
 const TRANSFER_TRANSACTION_TYPES = ['ExchSell', 'ExchBuy']
