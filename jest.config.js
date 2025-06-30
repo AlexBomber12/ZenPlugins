@@ -6,13 +6,12 @@ module.exports = {
   ],
   coveragePathIgnorePatterns: ['/windowLoader.js', '/src/plugins/fineco-it/index.ts'],
   coverageThreshold: {
-    'src/plugins/fineco-it/': {
-      lines: 90
-    }
+    global: { lines: 95 }
   },
   setupFiles: [],
   setupFilesAfterEnv: ['<rootDir>/scripts/setupJestTestFramework.js'],
   testMatch: [
+    '<rootDir>/src/plugins/fineco-it/__tests__/**/*.test.ts',
     '<rootDir>/src/**/__tests__/**/*.(j|t)s?(x)',
     '<rootDir>/src/**/?(*.)(spec|test).(j|t)s?(x)',
     '<rootDir>/__tests__/**/*.(j|t)s?(x)'
