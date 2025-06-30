@@ -1,0 +1,35 @@
+name: release
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+
+      - name: Activate Yarn 3
+        run: |
+          corepack enable
+          corepack prepare yarn@3.6.4 --activate
+
+      - run: yarn install --immutable
+      - run: yarn lint --max-warnings 0
+      - run: yarn tsc -b --noEmit
+      - run: yarn test --coverage
+      - run: yarn build:fineco-it
+      - run: node scripts/package.js
+      - run: yarn size
+
+      - name: Attach ZIP to release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/fineco-it.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
