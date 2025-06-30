@@ -22,7 +22,7 @@ jobs:
         corepack enable
         corepack prepare yarn@3.6.4 --activate
     - name: Install deps
-      run: yarn install --immutable --immutable-cache --check-cache
+      run: yarn install --immutable --immutable-cache
 
     - name: Lint
       run: yarn lint --max-warnings 0
