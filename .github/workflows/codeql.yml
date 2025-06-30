@@ -1,0 +1,40 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  schedule:
+    - cron: "0 3 * * 1"      # every Monday 03:00 UTC
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'javascript' ]      # plugin is TS/JS
+    steps:
+      - uses: actions/checkout@v4
+
+      # init CodeQL
+      - uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          queries: security-and-quality
+
+      # install deps (same as ci.yml)
+      - run: corepack enable && corepack prepare yarn@3.6.4 --activate
+      - run: yarn install --immutable
+
+      # autobuild (CodeQL detects ts-config & builds JS)
+      - uses: github/codeql-action/autobuild@v3
+
+      # analyze & upload SARIF
+      - uses: github/codeql-action/analyze@v3
