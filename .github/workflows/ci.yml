@@ -12,12 +12,17 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           cache: yarn
-      - run: corepack enable
-      - run: yarn install --immutable --immutable-cache --check-cache
+      - name: Activate Yarn 3
+        run: |
+          corepack enable
+          corepack prepare yarn@3.6.4 --activate
+      - run: yarn install --immutable
       - run: yarn lint --max-warnings 0
       - run: yarn tsc -b --noEmit
       - run: yarn test --coverage
-      - run: yarn build fineco-it
+      - run: yarn build:fineco-it
+      - run: node scripts/package.js
+      - run: yarn size
       - uses: actions/upload-artifact@v4
         with:
           name: fineco-it

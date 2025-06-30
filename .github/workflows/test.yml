@@ -17,10 +17,22 @@ jobs:
         node-version: 20
         cache: yarn
 
-    - name: Enable Corepack
-      run: corepack enable
+    - name: Activate Yarn 3
+      run: |
+        corepack enable
+        corepack prepare yarn@3.6.4 --activate
     - name: Install deps
-      run: yarn install --immutable --immutable-cache --check-cache
+      run: yarn install --immutable
 
+    - name: Lint
+      run: yarn lint --max-warnings 0
+    - name: Type check
+      run: yarn tsc -b --noEmit
     - name: Run tests
-      run: yarn test
+      run: yarn test --coverage
+    - name: Build plugin
+      run: yarn build:fineco-it
+    - name: Package plugin
+      run: node scripts/package.js
+    - name: Check bundle size
+      run: yarn size
