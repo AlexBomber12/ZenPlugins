@@ -15,12 +15,13 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: 20
-        cache: yarn
+        cache: 'npm'
 
     - name: Activate Yarn 3
       run: |
         corepack enable
         corepack prepare yarn@3.6.4 --activate
+        yarn --version
     - name: Install deps
       run: yarn install --immutable
     - name: Markdown lint
