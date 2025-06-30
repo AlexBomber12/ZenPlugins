@@ -17,6 +17,7 @@ jobs:
           corepack enable
           corepack prepare yarn@3.6.4 --activate
       - run: yarn install --immutable
+      - run: yarn run mdlint
       - run: yarn lint --max-warnings 0
       - run: yarn tsc -b --noEmit
       - run: yarn test --coverage
